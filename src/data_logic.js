@@ -69,9 +69,10 @@
 
         /**Initializes the graph */
         function InitializeGraph() {
+            
             return G.graph({
                 sizeAttenuation: size_attenuation,//whether to change the size of the nodes for a 3D effect or not
-                nodeImage: "imgs/disc.png",
+                //nodeImage: discImageBase64,
                 nodeImageTransparent: true,
                 antialias: true,
                 bgColor: 'lightgrey',//'lightskyblue',

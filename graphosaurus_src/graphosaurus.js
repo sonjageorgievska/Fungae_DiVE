@@ -607,7 +607,7 @@ function Trackball( object, domElement ) {
 		var d = ((typeof event.wheelDelta != "undefined") ? (-event.wheelDelta) : event.detail);
 	    //d = -0.01 * ((d > 0) ? 1 : -1);//the old one
         //new calculations start here
-		d = -0.1 * start_zoomin_factor * ((d > 0) ? 1 : -1);
+		d = -0.5 * start_zoomin_factor * ((d > 0) ? 1 : -1);//-0.1
 		if (old_d == undefined) {		    
 		}
 		else {
@@ -616,12 +616,12 @@ function Trackball( object, domElement ) {
 		        d = old_d;
 		        if (Math.abs(d) > 0.01) {
 		            if (d > 0) { //if zooming-in
-		                d = old_d * 0.95;
-		                //d = old_d -0.005
+		                //d = old_d * 0.95;
+		                
 		            }
 		            else {//if zooming-out
-		                d = old_d * (1/0.95);
-		                //d = old_d - 0.005
+		               // d = old_d * (1/0.95);
+		                
 		            }
 		        }
 		    }
@@ -15423,7 +15423,7 @@ THREE.EventDispatcher.prototype = {
 
 			Mesh: {},
 
-			PointCloud: { threshold: 0.001 },//was 1, changed by sonja
+			PointCloud: { threshold: 1},//was 1, changed by sonja 0.001
 
 			LOD: {},
 
@@ -15497,8 +15497,8 @@ THREE.EventDispatcher.prototype = {
 
 
 
-		//precision: 0.00001,
-        precision: 0.0000000001,//by sonja
+		precision: 0.00001,
+        //precision: 0.0000000001,//by sonja
 		linePrecision: 1,
 
        // linePrecision: 0.0001,
@@ -71839,14 +71839,24 @@ module.exports = (function () {
             depthWrite: false,
         });
        
-        if (this.graph._nodeImage !== undefined) {
+        //if (this.graph._nodeImage !== undefined) {
+        //    var texture = THREE.ImageUtils.loadTexture(
+        //        this.graph._nodeImage, undefined, function () {
+        //            // Force a rerender after node image has finished loading
+        //            self.forceRerender();
+        //        });
+        //    material.map = texture;
+        //}
+
+
+        if (true) {
             var texture = THREE.ImageUtils.loadTexture(
-                this.graph._nodeImage, undefined, function () {
-                    // Force a rerender after node image has finished loading
-                    self.forceRerender();
-                });
+                discImageBase64,
+            {},
+            function () { self.forceRerender(); /* async call after texture is loaded */ })
             material.map = texture;
         }
+
 
         var positions = new THREE.BufferAttribute(
             new Float32Array(nodes.length * 3), 3);
@@ -71905,12 +71915,20 @@ module.exports = (function () {
             depthWrite: false,
         });
 
-        if (this.graph._nodeImage !== undefined) {
+        //if (this.graph._nodeImage !== undefined) {
+        //    var texture = THREE.ImageUtils.loadTexture(
+        //        this.graph._nodeImage, undefined, function () {
+        //            // Force a rerender after node image has finished loading
+        //            self.forceRerender();
+        //        });
+        //    material.map = texture;
+        //}
+
+        if (true) {
             var texture = THREE.ImageUtils.loadTexture(
-                this.graph._nodeImage, undefined, function () {
-                    // Force a rerender after node image has finished loading
-                    self.forceRerender();
-                });
+                discImageBase64,
+            {},
+            function () { self.forceRerender(); /* async call after texture is loaded */ })
             material.map = texture;
         }
 
