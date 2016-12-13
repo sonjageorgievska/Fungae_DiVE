@@ -10,7 +10,7 @@
         var myPop = new dhtmlXPopup();//UI, the popup message that is displayed when hovering over a node          
         var previoslyhoveredNode;//hovering changes temporarily the color of a node to white, therefore we need to remember this
         var previosHoveredcolor;//the color of previoslyhoveredNode
-        var node_size = 0.016;
+        var node_size = 2;//0.016;
         var size_attenuation = true; //whether nodes closer to camera appear bigger (3d effect)
         var graph = InitializeGraph();//the graph is what is rendered, points are nodes of the graph. Optionally the graph can contain edges    
         var selectedPropertyIndex;//holds the index of the most recently selected numerical property (by the user)
