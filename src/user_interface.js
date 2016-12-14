@@ -19,6 +19,8 @@
              LoadDataFromFile(file);
          }
      }
+     nodesize.value = 10;
+     node_size = nodesize.value / 100.0;
  }
 
 
@@ -27,6 +29,7 @@
      InitGlobalDataVariables();
      var data = data_all;
      defineCombo(data);
+    
      InitDrawing(data);
      loadFirstTime = false;
  }
@@ -35,6 +38,8 @@
  /** Initializes the check boxes and the event handlers for the checkboxes */
  function InitEventHandlers() {
      sizeAtShow.checked = true;
+     //size_attenuation = false;
+     //node_size = 10;
      show_popup.checked = false;
      show_found_nodes.checked = false;
      sizeAtShow.onchange = function () {
@@ -45,7 +50,10 @@
      }
  }
 
-
+ function ChangeNodeSize() {
+     node_size = nodesize.value / 100.0;
+     redrawSameScene();
+ }
      
         /** What to do when the user clicks on the scale size box */
         function HandleSizeAttenuationChange()
@@ -53,7 +61,7 @@
             var sizeAtBool = sizeAtShow.checked;
             if (sizeAtBool) {
                 size_attenuation = true;
-                node_size = 0.016;
+                ChangeNodeSize();
             }
             else {
                 size_attenuation = false;
