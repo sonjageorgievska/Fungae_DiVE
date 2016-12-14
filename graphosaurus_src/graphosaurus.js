@@ -108,10 +108,10 @@ function Trackball( object, domElement ) {
 	this.screen = { left: 0, top: 0, width: 0, height: 0 };
 
 	//this.rotateSpeed = 0.01;
-	this.rotateSpeed = (old_d == undefined) ? 0.01 : Math.abs(old_d)/10.0;// by sonja
+	this.rotateSpeed = (old_d == undefined) ? object.near : Math.abs(old_d)/10.0;// by sonja
 	this.zoomSpeed = 1.2;//not used  -  by sonja
 	//this.panSpeed = 0.15;
-	this.panSpeed = (old_d == undefined) ? 0.1 : Math.abs(old_d); // by sonja
+	this.panSpeed = (old_d == undefined) ? object.near : Math.abs(old_d); // by sonja
 	this.noRotate = false;
 	this.noZoom = true; // by sonja
 	this.noPan = false;
@@ -276,7 +276,7 @@ function Trackball( object, domElement ) {
 	    var axis = new THREE.Vector3(),
 			quaternion = new THREE.Quaternion();
 
-
+	    _this.rotatespeed = _this.object.near;//added by sonja
 		return function () {
 
 			var angle = Math.acos( _rotateStart.dot( _rotateEnd ) / _rotateStart.length() / _rotateEnd.length() );
@@ -354,7 +354,7 @@ function Trackball( object, domElement ) {
 		var mouseChange = new THREE.Vector2(),
 			objectUp = new THREE.Vector3(),
 			pan = new THREE.Vector3();
-
+		_this.panspeed = _this.object.near;//added by sonja
 		return function () {
 
 			mouseChange.copy( _panEnd ).sub( _panStart );
@@ -578,77 +578,117 @@ function Trackball( object, domElement ) {
 	}
 
 	    
-	function mousewheel( event ) { // by sonja
+	//function mousewheel( event ) { // by sonja
 
 	   
 	  
-		if ( _this.enabled === false ) return;
+	//	if ( _this.enabled === false ) return;
 
-		event.preventDefault();
-		event.stopPropagation();
+	//	event.preventDefault();
+	//	event.stopPropagation();
 		
 	
-		//var delta = 0;
+	//	//var delta = 0;
 
-		//if ( event.wheelDelta ) { // WebKit / Opera / Explorer 9
+	//	//if ( event.wheelDelta ) { // WebKit / Opera / Explorer 9
 
-		//	delta = event.wheelDelta / 40;
+	//	//	delta = event.wheelDelta / 40;
 
-		//} else if ( event.detail ) { // Firefox
+	//	//} else if ( event.detail ) { // Firefox
 
-		//	delta = - event.detail / 3;
+	//	//	delta = - event.detail / 3;
         
-		//}
+	//	//}
 
         
-		//_zoomStart.y += delta * 0.01;
+	//	//_zoomStart.y += delta * 0.01;
 		
-        //changed by sonja
-		var d = ((typeof event.wheelDelta != "undefined") ? (-event.wheelDelta) : event.detail);
+    //    //changed by sonja
+	//	var d = ((typeof event.wheelDelta != "undefined") ? (-event.wheelDelta) : event.detail);
+	//    //d = -0.01 * ((d > 0) ? 1 : -1);//the old one
+    //    //new calculations start here
+	//	d = -0.5 * start_zoomin_factor * ((d > 0) ? 1 : -1);//-0.1
+	//	if (old_d == undefined) {		    
+	//	}
+	//	else {
+	//	    if (old_d * d > 0)//if wheel direction did not change
+	//	    {
+	//	        d = old_d;
+	//	        if (Math.abs(d) > 0.01) {
+	//	            if (d > 0) { //if zooming-in
+	//	                //d = old_d * 0.95;
+		                
+	//	            }
+	//	            else {//if zooming-out
+	//	               // d = old_d * (1/0.95);
+		                
+	//	            }
+	//	        }
+	//	    }
+	//	    else {//if wheel direction changed
+	//	        d = -old_d;
+	//	    }
+	//	}
+	//	old_d = d;
+	//	_this.panSpeed = Math.abs(old_d);
+	//	_this.rotateSpeed = Math.abs(old_d / 10);
+    //    //new calculations end here
+	//	var factor = d;
+	//	mX = ((event.clientX - frameStartsAt) / (window.innerWidth - frameStartsAt)) * 2 - 1;
+	//	mY = -(event.clientY / window.innerHeight) * 2 + 1;
+	//	var vector = new THREE.Vector3(mX, mY, 0.5);
+	//	vector.unproject(_this.object);
+	//	vector.sub(_this.object.position);
+
+	//	_this.object.position.addVectors(_this.object.position, vector.setLength(factor));        
+	//	_this.target.addVectors(_this.target, vector.setLength(factor));
+	//	_this.dispatchEvent( startEvent );
+	//    _this.dispatchEvent( endEvent );
+
+    //   //end by sonja
+
+	//}
+	
+
+	function mousewheel(event) { // by sonja
+
+
+
+	    if (_this.enabled === false) return;
+
+	    event.preventDefault();
+	    event.stopPropagation();
+
+	    //changed by sonja
+	    var d = ((typeof event.wheelDelta != "undefined") ? (-event.wheelDelta) : event.detail);
+	    var speed = node_size;
+	    if (!size_attenuation) {
+	        speed /= 10;
+	        if (speed < 0.01)
+	        { speed = 0.01; }
+	        if (speed > 0.1)
+	        { speed = 0.1;}
+	    };
 	    //d = -0.01 * ((d > 0) ? 1 : -1);//the old one
-        //new calculations start here
-		d = -0.5 * start_zoomin_factor * ((d > 0) ? 1 : -1);//-0.1
-		if (old_d == undefined) {		    
-		}
-		else {
-		    if (old_d * d > 0)//if wheel direction did not change
-		    {
-		        d = old_d;
-		        if (Math.abs(d) > 0.01) {
-		            if (d > 0) { //if zooming-in
-		                //d = old_d * 0.95;
-		                
-		            }
-		            else {//if zooming-out
-		               // d = old_d * (1/0.95);
-		                
-		            }
-		        }
-		    }
-		    else {//if wheel direction changed
-		        d = -old_d;
-		    }
-		}
-		old_d = d;
-		_this.panSpeed = Math.abs(old_d);
-		_this.rotateSpeed = Math.abs(old_d / 10);
-        //new calculations end here
-		var factor = d;
-		mX = ((event.clientX - frameStartsAt) / (window.innerWidth - frameStartsAt)) * 2 - 1;
-		mY = -(event.clientY / window.innerHeight) * 2 + 1;
-		var vector = new THREE.Vector3(mX, mY, 0.5);
-		vector.unproject(_this.object);
-		vector.sub(_this.object.position);
+	    d = -speed * ((d > 0) ? 1 : -1);//the old one
+	    var factor = d;
+	    mX = ((event.clientX - frameStartsAt) / (window.innerWidth - frameStartsAt)) * 2 - 1;
+	    mY = -(event.clientY / window.innerHeight) * 2 + 1;
+	    var vector = new THREE.Vector3(mX, mY, 0.5);
+	    vector.unproject(_this.object);
+	    vector.sub(_this.object.position);
 
-		_this.object.position.addVectors(_this.object.position, vector.setLength(factor));        
-		_this.target.addVectors(_this.target, vector.setLength(factor));
-		_this.dispatchEvent( startEvent );
-	    _this.dispatchEvent( endEvent );
+	    _this.object.position.addVectors(_this.object.position, vector.setLength(factor));
+	    _this.target.addVectors(_this.target, vector.setLength(factor));
+	    _this.dispatchEvent(startEvent);
+	    _this.dispatchEvent(endEvent);
 
-       //end by sonja
+	    //end by sonja
 
 	}
-	
+
+
+
 	function touchstart( event ) {
 
 		if ( _this.enabled === false ) return;
@@ -15531,6 +15571,7 @@ THREE.EventDispatcher.prototype = {
 
 
 			    this.near = camera.near; //added by sonja
+
 			    this.far = camera.far;//added by sonja
 				this.ray.origin.copy( camera.position );
 
@@ -71831,7 +71872,7 @@ module.exports = (function () {
     // changed by sonja
     Frame.prototype._initNodes = function (nodes) {
         var self = this;
-        
+        this.graph._nodeSize = node_size;
         var material = new THREE.PointCloudMaterial({
             size: this.graph._nodeSize,
             vertexColors: true,
@@ -72169,6 +72210,8 @@ module.exports = (function () {
             }
             else {
                 this.camera.near = 0.0001;//XXXXXXXXXXXXXXXXXXXXXX
+                if (size_attenuation)
+                { this.camera.near = node_size; }
                 this.camera.far = boundingSphere.radius * 2;
                 this.camera.updateProjectionMatrix();
             }
