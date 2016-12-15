@@ -1,5 +1,16 @@
 //functions for defining UI components and handling their events
 
+
+function HandleShowColorMapChange() {
+    if (show_color_map.checked) {
+        CreateColorMap();
+    }
+    else {
+        RemoveColorMap();
+    }
+}
+
+
  /** Defines what happens when the user has pressed the search button */
  function searchSequence() {
      var value = document.getElementById("search").value;

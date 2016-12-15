@@ -144,13 +144,18 @@
                 <p> Select a property: </p>
                 <select name="combo" id="combo" onchange="HandlePropertyChange()"></select>
                 <p>
+                    <input type="checkbox" name="show_color_map" id="show_color_map" onchange="HandleShowColorMapChange()" />
+
+                    <label style=" font: 12px Arial"> Show color map </label>
+                </p>
+                <p>
                     Click inside the field to select a color
                     <br> <text style=" font: 12px Arial"> Only for numerical properties
                 </p>
                 <input type="text" id="inputcolor" colorbox="true">
-                <p>
+                <!--<p>
                     <button style=" font: 14px Arial" onclick="ReturnAllColors()" name="button">Resume colors</button>
-                </p>
+                </p>-->
             </fieldset>
         </div>
     </div>
