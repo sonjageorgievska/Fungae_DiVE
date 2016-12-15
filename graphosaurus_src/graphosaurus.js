@@ -15570,7 +15570,7 @@ THREE.EventDispatcher.prototype = {
 			if ( camera instanceof THREE.PerspectiveCamera ) {
 
 
-			    this.near = camera.near; //added by sonja
+			    //this.near = camera.near; //added by sonja
 
 			    this.far = camera.far;//added by sonja
 				this.ray.origin.copy( camera.position );
@@ -72224,25 +72224,21 @@ module.exports = (function () {
             sorter = new BufferGeometrySorter(5);     
         // Update near/far camera range
         (function animate() {
-            self._updateCameraBounds();
+            self._updateCameraBounds();           
+          
             //sorter.sort(self.points.attributes, self.controls.object.position);      
             window.requestAnimationFrame(animate);
             self.controls.update();
         }());
     };
 
-    //changed by sonja
-    Frame.prototype._animateAgain = function () {
-        var self = this,
-            sorter = new BufferGeometrySorter(5);
-        // Update near/far camera range
-        (function animate() {
-            //self._updateCameraBounds();
-            sorter.sort(self.points.attributes, self.controls.object.position);
-            window.requestAnimationFrame(animate);
-            self.controls.update();
-        }());
-    };
+   
+
+
+    
+ 
+
+    
 
     return Frame;
 }());
